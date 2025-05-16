@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, Pressable, PressableProps } from 'react-native';
+import { Text, Pressable, PressableProps, View } from 'react-native';
 
 interface AuthButtonProps extends PressableProps {
   title: string;
@@ -9,6 +9,7 @@ interface AuthButtonProps extends PressableProps {
 
 export default function AuthButton({title, isLoading, onPress}: AuthButtonProps) {
   return (
+    <View className='mt-4 mx-8'>
     <Pressable className="bg-blue-600 py-3 px-6 rounded-xl items-center justify-center active:bg-blue-700 disabled:opacity-50"
       onPress={onPress}
       disabled={isLoading}
@@ -19,5 +20,6 @@ export default function AuthButton({title, isLoading, onPress}: AuthButtonProps)
         <Text className="text-white text-lg font-semibold">{title}</Text>
       )}
     </Pressable>
+    </View>
   )
 }

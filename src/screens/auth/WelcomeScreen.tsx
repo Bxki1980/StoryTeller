@@ -1,11 +1,22 @@
 import React from 'react'
-import { Text, Image,View } from 'react-native'
+import { Text, Image, View, TouchableOpacity } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Button } from 'react-native'
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { ParamListBase } from '@react-navigation/native';
 
-const Navaigate= 
+interface AuthStackParamList extends ParamListBase {
+  Welcome: undefined;
+  SignIn: undefined;
+  login: undefined;
+} 
+
+
+
 
 export default function WelcomeScreen() {
+  const navigation = useNavigation<NativeStackNavigationProp<AuthStackParamList>>();
   return (
     <SafeAreaView className='flex-1 bg-white'>
         <View className='flex-1 justify-center items-center bg-white'>
@@ -22,7 +33,13 @@ export default function WelcomeScreen() {
             ></Image>
             <View className='rounded-full bg-blue-500 w-1/2 h-12 justify-center items-center mt-10'>
               <Button  title='Get Started!' onPress={() => {}} ></Button>
-            </View>    
+            </View>
+            <View className='flex-row mt-5'>
+                <Text className='text-gray-500'>Already have an account?</Text>
+                <TouchableOpacity onPress={() => navigation.navigate('Login')}> 
+                <Text className='text-blue-500 font-semibold'> login!</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     </SafeAreaView>
   )

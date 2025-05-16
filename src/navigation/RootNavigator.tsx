@@ -19,11 +19,10 @@ export default function RootNavigator() {
 
     if (isLoading) return <LoadingScreen/>
 
-    if (isFirstLaunch) return <WelcomeScreen/>
 
   return (
     <NavigationContainer>
-        {userToken ? <AppNavigator/> : <AuthNavigator/>}
+        {userToken ? <AppNavigator /> : <AuthNavigator isFirstLaunch={isFirstLaunch} />}
     </NavigationContainer>
   )
 }
