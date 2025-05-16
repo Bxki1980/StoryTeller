@@ -3,6 +3,8 @@ import { Text, Image,View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Button } from 'react-native'
 
+const Navaigate= 
+
 export default function WelcomeScreen() {
   return (
     <SafeAreaView className='flex-1 bg-white'>

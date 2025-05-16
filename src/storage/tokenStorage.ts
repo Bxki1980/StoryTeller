@@ -13,3 +13,12 @@ export const getToken = async () => {
 export const removeToken = async () => {
     await AsyncStorage.removeItem(TOKEN_KEY)
 }
+
+//to see if the user has lunched the app for the first time or not
+export const getFirstLaunchFlag = async () => {
+  return await AsyncStorage.getItem('hasLaunchedBefore');
+};
+
+export const setFirstLaunchFlag = async () => {
+  await AsyncStorage.setItem('hasLaunchedBefore', 'true');
+};

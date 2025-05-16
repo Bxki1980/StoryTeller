@@ -6,19 +6,24 @@ import WelcomeScreen from '~/screens/auth/WelcomeScreen'
 import { NavigationContainer } from '@react-navigation/native'
 import AppNavigator from './AppNavigator'
 import AuthNavigator from './AuthNavigator'
+import LoadingScreen from '~/screens/common/LoadingScreen'
+import { useAuth } from '~/hooks/useAuth'
+
+
+
 
 const Stack = createNativeStackNavigator()
 
 export default function RootNavigator() {
-    const {user , isFirstLaunch, isLoading} = useContext(AuthContext);
+    const {userToken , isFirstLaunch, isLoading} = useAuth();
 
-    //if (isLoading) return <LoadingScreen/>
+    if (isLoading) return <LoadingScreen/>
 
     if (isFirstLaunch) return <WelcomeScreen/>
 
   return (
     <NavigationContainer>
-        {user ? <AppNavigator/> : <AuthNavigator/>}
+        {userToken ? <AppNavigator/> : <AuthNavigator/>}
     </NavigationContainer>
   )
 }
