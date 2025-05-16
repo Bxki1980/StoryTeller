@@ -1,6 +1,7 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
+    "types": ["nativewind/types"],   // ← this gives proper IntelliSense
     "strict": true,
     "jsx": "react-jsx"
     

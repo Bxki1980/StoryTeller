@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text, Image,View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import Button from '~/components/Button'
+import { Button } from 'react-native'
 
 export default function WelcomeScreen() {
   return (
@@ -18,8 +18,8 @@ export default function WelcomeScreen() {
                 className='w-full h-1/2 mt-10'
                 resizeMode='contain'
             ></Image>
-            <View >
-              <Button Title='Get Started' onPress={() => {}} />
+            <View className='rounded-full bg-blue-500 w-1/2 h-12 justify-center items-center mt-10'>
+              <Button  title='Get Started!' onPress={() => {}} ></Button>
             </View>    
         </View>
     </SafeAreaView>

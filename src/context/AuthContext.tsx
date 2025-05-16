@@ -36,10 +36,10 @@ export const AuthProvider = ({children}) => {
         checkToken();
     }, []);
 
-}
     return (
         <AuthContext.Provider value={{userToken, login, signup, logout, loading}}>
             {children}
         </AuthContext.Provider>
   );
-};
+}
+
