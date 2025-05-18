@@ -27,7 +27,7 @@ export default function WelcomeScreen() {
                 A place where you can share your stories and read others
             </Text>
             <Image
-                source={require('../../assets/images/js.jpeg')}
+                source={require('../../assets/images/auth/js.jpeg')}
                 className='w-full h-1/2 mt-10'
                 resizeMode='contain'
             ></Image>
