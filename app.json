@@ -3,27 +3,18 @@
     "name": "StoryTeller",
     "slug": "StoryTeller",
     "version": "1.0.0",
-    
-    
-      "web": {
-        "favicon": "./src/assets/images/favicon.png"
-      },
-      
-        "experiments": {
-          "tsconfigPaths": true
-        },
-      
-      "plugins": [
-        
-        
-        
-      ],
-    
+    "web": {
+      "favicon": "./src/assets/images/favicon.png"
+    },
+    "experiments": {
+      "tsconfigPaths": true
+    },
+    "plugins": [
+      "expo-secure-store"
+    ],
     "orientation": "portrait",
     "icon": "./src/assets/images/icon.png",
-    
-     "userInterfaceStyle": "light",
-    
+    "userInterfaceStyle": "light",
     "splash": {
       "image": "./src/assets/images/splash.png",
       "resizeMode": "contain",
