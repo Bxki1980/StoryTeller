@@ -4,9 +4,18 @@ import { View, TextInput, Text, TextInputProps } from 'react-native';
 interface AuthInputProps extends TextInputProps {
   label: string;
   error?: string;
+  value: string;
+  onChangeText: (text: string) => void;
+  secureTextEntry?: boolean;
 }
 
-export default function AuthInput({ label, error }: AuthInputProps) {
+export default function AuthInput({
+  label,
+  error,
+  value,
+  onChangeText,
+  secureTextEntry,
+}: AuthInputProps) {
   return (
     <View className="mb-4">
       <Text className="mb-2 text-sm font-semibold text-gray-100">{label}</Text>
@@ -15,7 +24,9 @@ export default function AuthInput({ label, error }: AuthInputProps) {
         placeholder={label}
         autoCapitalize="none"
         autoCorrect={false}
-        secureTextEntry={label.toLowerCase().includes('password')}
+        onChangeText={onChangeText}
+        value={value}
+        secureTextEntry={secureTextEntry}
       />
       {error && <Text className="mt-1 text-xs text-red-500">{error}</Text>}
     </View>

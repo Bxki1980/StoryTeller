@@ -2,12 +2,14 @@ import axios from 'axios';
 import { getFromSecureStore, saveToSecureStore } from '~/storage/secureStorage';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:5224/api',
+  baseURL: 'http://10.0.2.2:5224/api',
 });
 
 //Before any request is sent, read the access token from AsyncStorage and add it to the headers.
 axiosInstance.interceptors.request.use(async (config) => {
   const token = await getFromSecureStore('accessToken');
+
+   console.log('📦 Sending request body to API:', config.data);
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
