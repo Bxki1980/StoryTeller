@@ -5,7 +5,10 @@ import {
   deleteFromSecureStore,
 } from '../storage/secureStorage';
 
-export async function login(email: string, password: string): Promise<{ accessToken: string; refreshToken: string }> {
+export async function login(
+  email: string,
+  password: string
+): Promise<{ accessToken: string; refreshToken: string }> {
   const response = await axiosInstance.post('/auth/login', {
     email,
     password,
@@ -17,8 +20,7 @@ export async function login(email: string, password: string): Promise<{ accessTo
   await saveToSecureStore('refreshToken', refreshToken);
   await saveToSecureStore('userEmail', email);
 
-
-  return { accessToken, refreshToken }; 
+  return { accessToken, refreshToken };
 }
 
 export async function logout() {
@@ -57,7 +59,7 @@ export async function refreshToken() {
     throw new Error('No refresh token available');
   }
 
-  const response = await axiosInstance.post('/auth/refresh-token', {
+  const response = await axiosInstance.post('/auth/refresh', {
     refreshToken,
   });
 

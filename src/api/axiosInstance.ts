@@ -1,9 +1,5 @@
 import axios from 'axios';
-import {
-  getFromSecureStore,
-  saveToSecureStore,
-  deleteFromSecureStore,
-} from '~/storage/secureStorage';
+import { getFromSecureStore, saveToSecureStore } from '~/storage/secureStorage';
 
 const axiosInstance = axios.create({
   baseURL: 'http://localhost:5224/api',
