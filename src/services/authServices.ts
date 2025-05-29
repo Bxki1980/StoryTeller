@@ -1,16 +1,14 @@
-import axios from '../api/axiosInstance';
+import axiosInstance from '../api/axiosInstance';
 import {
   saveToSecureStore,
   getFromSecureStore,
-  deleteFromSecureStore
-} from '../storage/secureStorage'
+  deleteFromSecureStore,
+} from '../storage/secureStorage';
 
-
-
-export async function login (email: string, password: string){
-  const response = await axios.post('/auth/login', {
+export async function login(email: string, password: string) {
+  const response = await axiosInstance.post('/auth/login', {
     email,
-    password
+    password,
   });
 
   const { accessToken, refreshToken } = response.data;
@@ -19,15 +17,13 @@ export async function login (email: string, password: string){
   await saveToSecureStore('refreshToken', refreshToken);
 }
 
-
-
 export async function logout() {
   const refreshToken = await getFromSecureStore('refreshToken');
   const email = await getFromSecureStore('userEmail');
 
   try {
     if (refreshToken && email) {
-      await axios.post('/auth/logout', {
+      await axiosInstance.post('/auth/logout', {
         email,
         refreshToken,
       });
@@ -43,24 +39,21 @@ export async function logout() {
   ]);
 }
 
-
 export async function register(email: string, password: string, name: string) {
-  return await axios.post('/auth/register', {
+  return await axiosInstance.post('/auth/register', {
     email,
     password,
   });
 }
 
-
-
 export async function refreshToken() {
   const refreshToken = await getFromSecureStore('refreshToken');
 
-  if (!refreshToken){
+  if (!refreshToken) {
     throw new Error('No refresh token available');
   }
 
-  const response = await axios.post('/auth/refresh-token', {
+  const response = await axiosInstance.post('/auth/refresh-token', {
     refreshToken,
   });
 
@@ -73,7 +66,5 @@ export async function refreshToken() {
     await saveToSecureStore('refreshToken', newRefreshToken);
   }
 
-  return { accessToken: newAccessToken, refreshToken: newRefreshToken}
+  return { accessToken: newAccessToken, refreshToken: newRefreshToken };
 }
-
-
