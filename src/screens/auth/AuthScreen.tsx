@@ -11,6 +11,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import AuthInput from '~/components/auth/AuthInput';
 import AuthButton from '~/components/auth/AuthButton';
 import AuthToggle from '~/components/auth/AuthToggle';
+import { useAuth } from '~/hooks/useAuth';
+import * as AuthService from '../../services/authServices';
+import { Alert } from 'react-native';
 
 type AuthTab = 'login' | 'signup' | 'forgotPassword';
 
@@ -20,30 +23,53 @@ export default function AuthScreen() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
+  const { login } = useAuth();
+
+  const handleLogin = async () => {
+    try {
+      const { accessToken, refreshToken } = await AuthService.login(email, password);
+
+      await login(accessToken, refreshToken, email);
+    } catch (err: any) {
+      Alert.alert('Login Failed', err.response?.data?.message || err.message);
+    }
+  };
+
   const renderForm = () => {
     switch (activeTab) {
       case 'login':
         return (
           <>
             <AuthInput label="EMAIL" value={email} onChangeText={setEmail} />
-            <AuthInput label="PASSWORD" value={password} onChangeText={setPassword} />
+            <AuthInput
+              label="PASSWORD"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+            />
             <TouchableOpacity
               onPress={() => setActiveTab('forgotPassword')}
               className="mb-8 self-end">
               <Text className="font-semibold text-blue-400 underline">Forgot Password?</Text>
             </TouchableOpacity>
-            <AuthButton title="Login" onPress={() => {}} isLoading={false} />
+            <AuthButton title="Login" onPress={handleLogin} isLoading={false} />
           </>
         );
       case 'signup':
         return (
           <>
             <AuthInput label="EMAIL" value={email} onChangeText={setEmail} />
-            <AuthInput label="PASSWORD" value={password} onChangeText={setPassword} />
+            <AuthInput
+              label="PASSWORD"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+            />
             <AuthInput
               label="CONFIRM PASSWORD"
               value={confirmPassword}
               onChangeText={setConfirmPassword}
+              secureTextEntry
             />
             <AuthButton title="Sign up" onPress={() => {}} isLoading={false} />
           </>

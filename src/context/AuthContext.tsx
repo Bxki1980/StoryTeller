@@ -7,6 +7,8 @@ import {
 } from '../storage/secureStorage';
 import { get } from 'node_modules/axios/index.cjs';
 import axiosInstance from '../api/axiosInstance';
+import { setLogoutFunction } from '~/api/axiosInstance';
+import { jwtDecode } from 'jwt-decode';
 
 interface AuthContextProps {
   isLoading: boolean;
@@ -16,6 +18,10 @@ interface AuthContextProps {
   login: (accessToken: string, refreshToken: string, email: string) => Promise<void>;
   logout: () => Promise<void>;
   refreshToken: () => Promise<void>;
+}
+
+interface DecodedToken {
+  exp: number; // expiration time in seconds
 }
 
 export const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -91,6 +97,39 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
+    const initializeAuth = async () => {
+      try {
+        const token = await getFromSecureStore('accessToken');
+
+        if (!token) {
+          setIsLoading(false);
+          return;
+        }
+
+        const decoded = jwtDecode<DecodedToken>(token);
+        const now = Math.floor(Date.now() / 1000);
+
+        if (decoded.exp < now) {
+          // Access token is expired, try refreshing
+          try {
+            await refreshToken(); // should internally set accessToken
+          } catch {
+            await logout(); // refresh also failed
+          }
+        } else {
+          setAccessToken(token); // Token still valid
+        }
+      } catch (err) {
+        await logout();
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    initializeAuth();
+  }, []);
+
+  useEffect(() => {
     const loadToken = async () => {
       const token = await getFromSecureStore('accessToken');
       if (token) setAccessToken(token);
@@ -101,6 +140,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
     init();
     loadToken();
+    setLogoutFunction(logout);
   }, []);
 
   return (

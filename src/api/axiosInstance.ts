@@ -1,14 +1,14 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {
-getFromSecureStore,
-saveToSecureStore,
-deleteFromSecureStore, } from '~/storage/secureStorage';
+  getFromSecureStore,
+  saveToSecureStore,
+  deleteFromSecureStore,
+} from '~/storage/secureStorage';
 
 const axiosInstance = axios.create({
   baseURL: 'http://localhost:5224/api',
 });
-
 
 //Before any request is sent, read the access token from AsyncStorage and add it to the headers.
 axiosInstance.interceptors.request.use(async (config) => {
@@ -19,6 +19,31 @@ axiosInstance.interceptors.request.use(async (config) => {
   return config;
 });
 
+let logoutRef: (() => Promise<void>) | null = null;
+
+export const setLogoutFunction = (fn: () => Promise<void>) => {
+  logoutRef = fn;
+};
+
+export const getLogoutFunction = () => {
+  if (!logoutRef) throw new Error('logout function not set');
+  return logoutRef;
+};
+
+let isRefreshing = false;
+let failedQueue: any[] = [];
+
+const processQueue = (error: any, token: string | null = null) => {
+  failedQueue.forEach((prom) => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve(token);
+    }
+  });
+
+  failedQueue = [];
+};
 
 /* 
 If we receive a 401 Unauthorized response:
@@ -26,38 +51,55 @@ Call the refresh token API
 Get new access token
 Retry the failed request
 */
-
 axiosInstance.interceptors.response.use(
-  (response) => response,  // If response is OK, just return it
+  (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
-    // If token expired AND we haven't retried yet
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
-      const refreshToken = await getFromSecureStore('refreshToken');
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          failedQueue.push({
+            resolve: (token: string) => {
+              originalRequest.headers.Authorization = `Bearer ${token}`;
+              resolve(axiosInstance(originalRequest));
+            },
+            reject: (err: any) => reject(err),
+          });
+        });
+      }
+
+      isRefreshing = true;
 
       try {
-        const res = await axios.post('http://localhost:5224/api/auth/refresh-token', {
+        const refreshToken = await getFromSecureStore('refreshToken');
+        if (!refreshToken) throw new Error('Missing refresh token');
+
+        const response = await axios.post('http://localhost:5224/api/auth/refresh-token', {
           refreshToken,
         });
 
-        const { accessToken } = res.data;
+        const { accessToken } = response.data;
 
         await saveToSecureStore('accessToken', accessToken);
 
-        // Update Axios headers globally and for this request
-        axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-        originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
+        axiosInstance.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+        originalRequest.headers.Authorization = `Bearer ${accessToken}`;
 
-        return axiosInstance(originalRequest); // Retry the failed request
-      } catch (refreshError) {
-        await Promise.all([
-        deleteFromSecureStore('accessToken'),
-        deleteFromSecureStore('refreshToken'),
-        ]);
-        return Promise.reject(refreshError); // Force logout later
+        processQueue(null, accessToken);
+        return axiosInstance(originalRequest);
+      } catch (err) {
+        processQueue(err, null);
+
+        // ❌ If refresh failed, log user out
+
+        await getLogoutFunction()();
+
+        return Promise.reject(err);
+      } finally {
+        isRefreshing = false;
       }
     }
 

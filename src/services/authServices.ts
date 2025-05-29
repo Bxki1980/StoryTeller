@@ -5,7 +5,7 @@ import {
   deleteFromSecureStore,
 } from '../storage/secureStorage';
 
-export async function login(email: string, password: string) {
+export async function login(email: string, password: string): Promise<{ accessToken: string; refreshToken: string }> {
   const response = await axiosInstance.post('/auth/login', {
     email,
     password,
@@ -15,6 +15,10 @@ export async function login(email: string, password: string) {
 
   await saveToSecureStore('accessToken', accessToken);
   await saveToSecureStore('refreshToken', refreshToken);
+  await saveToSecureStore('userEmail', email);
+
+
+  return { accessToken, refreshToken }; 
 }
 
 export async function logout() {
