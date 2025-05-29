@@ -43,7 +43,7 @@ export async function logout() {
   ]);
 }
 
-export async function register(email: string, password: string, name: string) {
+export async function register(email: string, password: string) {
   return await axiosInstance.post('/auth/register', {
     email,
     password,

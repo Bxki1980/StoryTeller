@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {
   getFromSecureStore,
@@ -14,7 +13,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(async (config) => {
   const token = await getFromSecureStore('accessToken');
   if (token) {
-    config.headers.Authorization = `bearer ${token}`;
+    config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });
@@ -77,7 +76,7 @@ axiosInstance.interceptors.response.use(
         const refreshToken = await getFromSecureStore('refreshToken');
         if (!refreshToken) throw new Error('Missing refresh token');
 
-        const response = await axios.post('http://localhost:5224/api/auth/refresh-token', {
+        const response = await axios.post('/auth/refresh-token', {
           refreshToken,
         });
 
