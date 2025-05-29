@@ -5,7 +5,6 @@ import {
   getFromSecureStore,
   deleteFromSecureStore,
 } from '../storage/secureStorage';
-import { get } from 'node_modules/axios/index.cjs';
 import axiosInstance from '../api/axiosInstance';
 import { setLogoutFunction } from '~/api/axiosInstance';
 import { jwtDecode } from 'jwt-decode';
@@ -56,7 +55,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     if (storedRefreshToken && storedEmail) {
       try {
-        await get('/auth/logout', {
+        await axiosInstance.get('/auth/logout', {
           params: {
             email: storedEmail,
             refreshToken: storedRefreshToken,
@@ -77,7 +76,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const refreshToken = async () => {
     const storedRefreshToken = await getFromSecureStore('refreshToken');
-    if (!storedRefreshToken) return logout();
+    if (!storedRefreshToken) await logout();
 
     try {
       const res = await axiosInstance.post('/auth/refresh', {
@@ -130,17 +129,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    const loadToken = async () => {
-      const token = await getFromSecureStore('accessToken');
-      if (token) setAccessToken(token);
-    };
-
-    const init = async () => {
-      await checkFirstLaunch();
-    };
-    init();
-    loadToken();
+  const initializeAppState = async () => {
+    await checkFirstLaunch();
     setLogoutFunction(logout);
+  };
+
+  initializeAppState();
   }, []);
 
   return (
