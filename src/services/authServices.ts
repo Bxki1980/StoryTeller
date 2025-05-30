@@ -16,9 +16,9 @@ export async function login(
 
   const { accessToken, refreshToken } = response.data;
 
-  await saveToSecureStore('accessToken', accessToken);
-  await saveToSecureStore('refreshToken', refreshToken);
-  await saveToSecureStore('userEmail', email);
+  await saveToSecureStore('accessToken', String(accessToken));
+  await saveToSecureStore('refreshToken', String(refreshToken));
+  await saveToSecureStore('userEmail', String(email));
 
   return { accessToken, refreshToken };
 }
