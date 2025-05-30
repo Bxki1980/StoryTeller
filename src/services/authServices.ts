@@ -43,14 +43,27 @@ export async function logout() {
     deleteFromSecureStore('refreshToken'),
     deleteFromSecureStore('userEmail'),
   ]);
+
 }
 
-export async function register(email: string, password: string) {
-  return await axiosInstance.post('/auth/register', {
+export async function register(
+  email: string,
+  password: string
+): Promise<{ accessToken: string; refreshToken: string; email: string }> {
+  const response = await axiosInstance.post('/auth/register', {
     email,
     password,
   });
+
+  const { token: accessToken, refreshToken, email: returnedEmail } = response.data.data;
+
+  await saveToSecureStore('accessToken', String(accessToken));
+  await saveToSecureStore('refreshToken', String(refreshToken));
+  await saveToSecureStore('userEmail', String(returnedEmail));
+
+  return { accessToken, refreshToken, email: returnedEmail };
 }
+
 
 export async function refreshToken() {
   const refreshToken = await getFromSecureStore('refreshToken');
