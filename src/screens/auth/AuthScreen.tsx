@@ -35,6 +35,24 @@ export default function AuthScreen() {
     }
   };
 
+  const handleRegister = async () => {
+  if (!email || !password || !confirmPassword || password !== confirmPassword) {
+    Alert.alert('Validation Error', 'Please check your fields.');
+    return;
+  }
+
+  try {
+    const { accessToken, refreshToken } = await AuthService.register(
+      email,
+      password,
+    );
+
+    await login(accessToken, refreshToken, email);
+  } catch (err: any) {
+    Alert.alert('Register Failed', err.response?.data?.message || err.message);
+  }
+};
+
   const renderForm = () => {
     switch (activeTab) {
       case 'login':

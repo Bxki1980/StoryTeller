@@ -74,3 +74,17 @@ export async function refreshToken() {
 
   return { accessToken: newAccessToken, refreshToken: newRefreshToken };
 }
+
+export async function googleLogin(
+  idToken: string
+): Promise<{ accessToken: string; refreshToken: string; email: string }> {
+  const response = await axiosInstance.post('/GoogleLogin/google-signin-token', { idToken });
+
+  const { token: accessToken, refreshToken, email } = response.data.data;
+
+  await saveToSecureStore('accessToken', String(accessToken));
+  await saveToSecureStore('refreshToken', String(refreshToken));
+  await saveToSecureStore('userEmail', String(email));
+
+  return { accessToken, refreshToken, email };
+}

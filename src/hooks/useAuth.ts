@@ -1,6 +1,7 @@
 import { saveToSecureStore } from '~/storage/secureStorage';
 import { useContext } from 'react';
 import { AuthContext } from '~/context/AuthContext';
+import axiosInstance from '~/api/axiosInstance';
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -14,8 +15,8 @@ export const useAuth = () => {
 
 export const loginWithGoogleIdToken = async (idToken: string) => {
   try {
-    const response = await axios.post(
-      `${baseURL}/GoogleLogin/google-signin-token`,
+    const response = await axiosInstance.post(
+      '/GoogleLogin/google-signin-token',
       idToken,
       {
         headers: { 'Content-Type': 'application/json' }
