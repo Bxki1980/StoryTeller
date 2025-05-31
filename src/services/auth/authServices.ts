@@ -1,9 +1,9 @@
-import axiosInstance from '../api/axiosInstance';
+import axiosInstance from '../../api/axiosInstance';
 import {
   saveToSecureStore,
   getFromSecureStore,
   deleteFromSecureStore,
-} from '../storage/secureStorage';
+} from '../../storage/secureStorage';
 
 export async function login(
   email: string,
@@ -43,7 +43,6 @@ export async function logout() {
     deleteFromSecureStore('refreshToken'),
     deleteFromSecureStore('userEmail'),
   ]);
-
 }
 
 export async function register(
@@ -63,7 +62,6 @@ export async function register(
 
   return { accessToken, refreshToken, email: returnedEmail };
 }
-
 
 export async function refreshToken() {
   const refreshToken = await getFromSecureStore('refreshToken');
@@ -88,16 +86,21 @@ export async function refreshToken() {
   return { accessToken: newAccessToken, refreshToken: newRefreshToken };
 }
 
-export async function googleLogin(
-  idToken: string
-): Promise<{ accessToken: string; refreshToken: string; email: string }> {
-  const response = await axiosInstance.post('/GoogleLogin/google-signin-token', { idToken });
+export async function googleLogin(idToken: string): Promise<{
+  accessToken: string;
+  refreshToken: string;
+  email: string;
+}> {
+  const response = await axiosInstance.post('/GoogleLogin/google-signin-token', idToken, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 
-  const { token: accessToken, refreshToken, email } = response.data.data;
-
-  await saveToSecureStore('accessToken', String(accessToken));
-  await saveToSecureStore('refreshToken', String(refreshToken));
-  await saveToSecureStore('userEmail', String(email));
-
-  return { accessToken, refreshToken, email };
+  const { data } = response.data; // Assuming you're using ApiResponse<AuthResponseDto>
+  return {
+    accessToken: data.token,
+    refreshToken: data.refreshToken,
+    email: data.email,
+  };
 }
