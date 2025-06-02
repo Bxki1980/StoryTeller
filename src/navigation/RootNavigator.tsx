@@ -11,9 +11,10 @@ export default function RootNavigator() {
   const { isAuthenticated, isFirstLaunch, isLoading } = useAuth();
 
   if (isLoading) return <LoadingScreen />;
+  console.log('🧠 Auth status:', { isAuthenticated, isLoading });
 
   return (
-    <NavigationContainer key={isAuthenticated ? 'app' : 'auth '}>
+    <NavigationContainer key={isAuthenticated ? 'app' : 'auth'}>
       {isAuthenticated ? <AppNavigator /> : <AuthNavigator isFirstLaunch={isFirstLaunch} />}
     </NavigationContainer>
   );

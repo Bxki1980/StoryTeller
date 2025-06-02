@@ -1,7 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
-import HomeScreen from '~/screens/main/HomeScreen';
 import PlaylistsScreen from '~/screens/main/PlaylistsScreen';
 import LibraryScreen from '~/screens/main/LibraryScreen';
 import ProfileScreen from '~/screens/main/ProfileScreen';
@@ -11,7 +10,6 @@ const Tab = createBottomTabNavigator();
 
 export default function BottomTabNavigator() {
   return (
-    <NavigationContainer>
       <Tab.Navigator
         screenOptions={({ route }) => ({
           headerShown: false,
@@ -40,11 +38,13 @@ export default function BottomTabNavigator() {
           },
         })}
       >
-        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen
+          name="Home"
+          getComponent={() => require('../../screens/main/HomeScreen').default}
+        />
         <Tab.Screen name="Playlists" component={PlaylistsScreen} />
         <Tab.Screen name="Library" component={LibraryScreen} />
         <Tab.Screen name="Profile" component={ProfileScreen} />
       </Tab.Navigator>
-    </NavigationContainer>
   );
 }

@@ -6,7 +6,6 @@ import {
   deleteFromSecureStore,
 } from '../storage/secureStorage';
 import axiosInstance from '../api/axiosInstance';
-import { setLogoutFunction } from '~/api/axiosInstance';
 import { jwtDecode } from 'jwt-decode';
 
 interface AuthContextProps {
@@ -20,7 +19,7 @@ interface AuthContextProps {
 }
 
 interface DecodedToken {
-  exp: number; // expiration time in seconds
+  exp: number;
 }
 
 export const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -32,7 +31,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const checkFirstLaunch = async () => {
     const hasLaunched = await AsyncStorage.getItem('hasLaunchedBefore');
-    if (hasLaunched === null) {
+    if (!hasLaunched) {
       await AsyncStorage.setItem('hasLaunchedBefore', 'true');
       setIsFirstLaunch(true);
     } else {
@@ -55,14 +54,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     if (storedRefreshToken && storedEmail) {
       try {
-        await axiosInstance.get('/auth/logout', {
-          params: {
-            email: storedEmail,
-            refreshToken: storedRefreshToken,
-          },
+        await axiosInstance.post('/auth/logout', {
+          email: storedEmail,
+          refreshToken: storedRefreshToken,
         });
       } catch (err) {
-        console.warn('Logout failed, but continuing...');
+        console.warn('Logout request failed');
       }
     }
 
@@ -71,12 +68,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       deleteFromSecureStore('refreshToken'),
       deleteFromSecureStore('userEmail'),
     ]);
+
     setAccessToken(null);
   };
 
   const refreshToken = async () => {
     const storedRefreshToken = await getFromSecureStore('refreshToken');
-    if (!storedRefreshToken) await logout();
+    if (!storedRefreshToken) {
+      await logout();
+      return;
+    }
 
     try {
       const res = await axiosInstance.post('/auth/refresh', {
@@ -89,8 +90,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (newRefreshToken) {
         await saveToSecureStore('refreshToken', newRefreshToken);
       }
+
       setAccessToken(newAccessToken);
-    } catch (err) {
+    } catch {
       await logout();
     }
   };
@@ -109,16 +111,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const now = Math.floor(Date.now() / 1000);
 
         if (decoded.exp < now) {
-          // Access token is expired, try refreshing
-          try {
-            await refreshToken(); // should internally set accessToken
-          } catch {
-            await logout(); // refresh also failed
-          }
+          await refreshToken();
         } else {
-          setAccessToken(token); // Token still valid
+          setAccessToken(token);
         }
-      } catch (err) {
+      } catch {
         await logout();
       } finally {
         setIsLoading(false);
@@ -129,12 +126,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   useEffect(() => {
-  const initializeAppState = async () => {
-    await checkFirstLaunch();
-    setLogoutFunction(logout);
-  };
-
-  initializeAppState();
+    checkFirstLaunch();
   }, []);
 
   return (
@@ -147,7 +139,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         login,
         logout,
         refreshToken,
-      }}>
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

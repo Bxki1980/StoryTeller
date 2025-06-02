@@ -9,19 +9,20 @@ export async function login(
   email: string,
   password: string
 ): Promise<{ accessToken: string; refreshToken: string }> {
-  const response = await axiosInstance.post('/auth/login', {
+  const response = await axiosInstance.post('/Auth/login', {
     email,
     password,
   });
 
-  const { accessToken, refreshToken } = response.data;
+  const { token: accessToken, refreshToken } = response.data.data;
 
-  await saveToSecureStore('accessToken', String(accessToken));
-  await saveToSecureStore('refreshToken', String(refreshToken));
-  await saveToSecureStore('userEmail', String(email));
+  await saveToSecureStore('accessToken', accessToken);
+  await saveToSecureStore('refreshToken', refreshToken);
+  await saveToSecureStore('userEmail', email);
 
   return { accessToken, refreshToken };
 }
+
 
 export async function logout() {
   const refreshToken = await getFromSecureStore('refreshToken');

@@ -11,8 +11,14 @@ export default function AuthNavigator({ isFirstLaunch }: { isFirstLaunch: boolea
       screenOptions={{
         headerShown: false,
       }}>
-      {isFirstLaunch && <Stack.Screen name="Welcome" component={WelcomeScreen} />}
-      <Stack.Screen name="auth" component={AuthScreen} />
+      {isFirstLaunch ? (
+        <>
+          <Stack.Screen name="Welcome" component={WelcomeScreen} />
+          <Stack.Screen name="auth" component={AuthScreen} />
+        </>
+      ) : (
+        <Stack.Screen name="auth" component={AuthScreen} />
+      )}
     </Stack.Navigator>
   );
 }
