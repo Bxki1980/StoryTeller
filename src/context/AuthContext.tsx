@@ -80,9 +80,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
 
     try {
-      const res = await axiosInstance.post('/auth/refresh', {
-        refreshToken: storedRefreshToken,
-      });
+      const res = await axiosInstance.post(
+        '/auth/refresh',
+        { refreshToken: storedRefreshToken },
+        { headers: { 'Content-Type': 'application/json' } }
+      );
 
       const { accessToken: newAccessToken, refreshToken: newRefreshToken } = res.data;
 
@@ -139,8 +141,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         login,
         logout,
         refreshToken,
-      }}
-    >
+      }}>
       {children}
     </AuthContext.Provider>
   );

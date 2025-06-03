@@ -25,7 +25,7 @@ export default function WelcomeScreen() {
           className="mt-10 h-1/2 w-full"
           resizeMode="contain"></Image>
         <TouchableOpacity
-          onPress={() => {}}
+          onPress={() =>  navigation.navigate('auth')}
           className="mt-10 h-12 w-1/2 items-center justify-center rounded-full bg-blue-500 shadow-md">
           <Text className="text-base font-bold uppercase text-white">Get Started!</Text>
         </TouchableOpacity>

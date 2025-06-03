@@ -7,15 +7,9 @@ const Stack = createNativeStackNavigator();
 
 export default function AuthNavigator({ isFirstLaunch }: { isFirstLaunch: boolean }) {
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       {isFirstLaunch ? (
-        <>
-          <Stack.Screen name="Welcome" component={WelcomeScreen} />
-          <Stack.Screen name="auth" component={AuthScreen} />
-        </>
+        <Stack.Screen name="Welcome" component={WelcomeScreen} />
       ) : (
         <Stack.Screen name="auth" component={AuthScreen} />
       )}

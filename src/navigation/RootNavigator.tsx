@@ -17,5 +17,5 @@ export default function RootNavigator() {
     <NavigationContainer key={isAuthenticated ? 'app' : 'auth'}>
       {isAuthenticated ? <AppNavigator /> : <AuthNavigator isFirstLaunch={isFirstLaunch} />}
     </NavigationContainer>
-  );
+  ); 
 }

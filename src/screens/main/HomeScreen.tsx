@@ -9,6 +9,8 @@ import SectionHeader from '~/components/common/SectionHeader';
 import PlaylistCard from '~/components/home/PlaylistCard';
 import BottomTabNavigator from '~/components/common/BottomTabNavigator';
 import Header from '~/components/home/Header';
+import PlaylistsScreen from './PlaylistsScreen';
+import LibraryScreen from './LibraryScreen';
 
 export default function HomeScreen() {
   return (
@@ -32,8 +34,8 @@ export default function HomeScreen() {
 
         <SectionHeader title="Playlists" />
         <View className="flex-row justify-between mt-2">
-          <PlaylistCard title="Playlists" image={0} screen="" />
-          <PlaylistCard title="Library" image={0} screen="" />
+          <PlaylistCard title="Playlists" image={0} screen="PlaylistsScreen" />
+          <PlaylistCard title="Library" image={0} screen="LibraryScreen" />
         </View>
       </ScrollView>
 

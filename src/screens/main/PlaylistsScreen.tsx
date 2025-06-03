@@ -1,7 +1,8 @@
 import React from 'react'
+import { Text } from 'react-native'
 
 export default function PlaylistsScreen() {
   return (
-    <div>PlaylistsScreen</div>
+    <Text>PlaylistsScreen</Text>
   )
 }
