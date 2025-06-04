@@ -31,7 +31,7 @@ export default function WelcomeScreen() {
         </TouchableOpacity>
         <View className="mt-5 flex-row">
           <Text className="text-gray-500">Already have an account?</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('auth')}>
+          <TouchableOpacity onPress={() => navigation.navigate('auth', { screen: 'AuthScreen' })}>
             <Text className="font-semibold text-blue-500"> login!</Text>
           </TouchableOpacity>
         </View>

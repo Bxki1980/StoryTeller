@@ -11,7 +11,7 @@ export default function App() {
   return (
     <GestureHandlerRootView className='flex-1'>
       <AuthProvider>
-        <RootNavigator />
+          <RootNavigator />
       </AuthProvider>
     </GestureHandlerRootView>
   );
