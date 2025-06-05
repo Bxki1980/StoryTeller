@@ -15,6 +15,12 @@ import { useEffect } from 'react';
 
 
 export default function HomeScreen() {
+
+  useEffect(() => {
+  console.log('🏠 HomeScreen loaded');
+}, []);
+
+
   return (
     <SafeAreaView className="flex-1 bg-white">
       <ScrollView className="px-4">
