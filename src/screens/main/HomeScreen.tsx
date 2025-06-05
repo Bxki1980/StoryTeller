@@ -11,6 +11,8 @@ import BottomTabNavigator from '~/components/common/BottomTabNavigator';
 import Header from '~/components/home/Header';
 import PlaylistsScreen from './PlaylistsScreen';
 import LibraryScreen from './LibraryScreen';
+import { useEffect } from 'react';
+
 
 export default function HomeScreen() {
   return (

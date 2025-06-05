@@ -105,3 +105,22 @@ export async function googleLogin(idToken: string): Promise<{
     email: data.email,
   };
 }
+
+
+export const loginWithGoogleIdToken = async (idToken: string) => {
+  try {
+    const response = await axiosInstance.post(
+      '/GoogleLogin/google-signin-token',
+      idToken,
+      {
+        headers: { 'Content-Type': 'application/json' }
+      }
+    );
+
+    const { token, refreshToken } = response.data;
+    await saveToSecureStore('accessToken', token);
+    await saveToSecureStore('refreshToken', refreshToken);
+  } catch (err) {
+    console.error("Google login failed", err);
+  }
+};

@@ -24,6 +24,7 @@ export default function AuthScreen() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
+
   const { login } = useAuth();
 
   const handleLogin = async () => {

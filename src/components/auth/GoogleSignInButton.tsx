@@ -14,7 +14,7 @@ export default function GoogleSignInButton() {
   const [loading, setLoading] = useState(false);
 
   const [request, response, promptAsync] = Google.useAuthRequest({
-    clientId: '146989601159-65277rdh9cknsjesnqn2q94k0uiedrrp.apps.googleusercontent.com', // ✅ Use Web OAuth Client ID here
+    clientId: '146989601159-65277rdh9cknsjesnqn2q94k0uiedrrp.apps.googleusercontent.com',
     redirectUri: AuthSession.makeRedirectUri({ useProxy: true } as any),
   });
 

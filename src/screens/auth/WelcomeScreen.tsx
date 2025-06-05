@@ -25,13 +25,13 @@ export default function WelcomeScreen() {
           className="mt-10 h-1/2 w-full"
           resizeMode="contain"></Image>
         <TouchableOpacity
-          onPress={() =>  navigation.navigate('auth')}
+          onPress={() => navigation.navigate('auth')}
           className="mt-10 h-12 w-1/2 items-center justify-center rounded-full bg-blue-500 shadow-md">
           <Text className="text-base font-bold uppercase text-white">Get Started!</Text>
         </TouchableOpacity>
         <View className="mt-5 flex-row">
           <Text className="text-gray-500">Already have an account?</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('auth', { screen: 'AuthScreen' })}>
+          <TouchableOpacity onPress={() => navigation.navigate('auth')}>
             <Text className="font-semibold text-blue-500"> login!</Text>
           </TouchableOpacity>
         </View>
