@@ -42,8 +42,8 @@ export default function HomeScreen() {
 
         <SectionHeader title="Playlists" />
         <View className="flex-row justify-between mt-2">
-          <PlaylistCard title="Playlists" image={0} screen="PlaylistsScreen" />
-          <PlaylistCard title="Library" image={0} screen="LibraryScreen" />
+          <PlaylistCard title="Playlists" image={require('../../assets/images/playlist.webp')} screen="PlaylistsScreen" />
+          <PlaylistCard title="Library" image={require('../../assets/images/library.webp')} screen="LibraryScreen" />
         </View>
       </ScrollView>
     </SafeAreaView>
