@@ -46,8 +46,6 @@ export default function HomeScreen() {
           <PlaylistCard title="Library" image={0} screen="LibraryScreen" />
         </View>
       </ScrollView>
-
-      <BottomTabNavigator />
     </SafeAreaView>
   );
 }
