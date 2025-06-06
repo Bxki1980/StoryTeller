@@ -1,16 +1,27 @@
-import React from 'react'
-import { View, Text } from 'react-native';
+import { View, TouchableOpacity, Text } from 'react-native';
+import React from 'react';
 
 interface Props {
-    email: string;
-    role: string;
+  onEditProfile: () => void;
+  onLogout: () => void;
 }
 
-export default function ProfileActions({email , role}: Props) {
+export default function ProfileActions({ onEditProfile, onLogout }: Props) {
   return (
-    <View className='bg-white rounded-xl shadow px-4 py-3 w-full'>
-        <Text className='text-gray-700'>Email: <Text className='font-semibold'>{email}</Text></Text>
-        <Text className='text-gray-700 mt-2'>Role: <Text className='font-semibold'>{role}</Text></Text>
+    <View className="w-full mt-6">
+      <TouchableOpacity
+        className="bg-blue-600 py-3 rounded-xl mb-4"
+        onPress={onEditProfile}
+      >
+        <Text className="text-white text-center font-semibold">Edit Profile</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        className="bg-red-500 py-3 rounded-xl"
+        onPress={onLogout}
+      >
+        <Text className="text-white text-center font-semibold">Sign Out</Text>
+      </TouchableOpacity>
     </View>
-  )
+  );
 }

@@ -3,6 +3,7 @@
     "name": "StoryTeller",
     "slug": "StoryTeller",
     "scheme": "storyteller", 
+    
     "version": "1.0.0",
     "web": {
       "favicon": "./src/assets/images/favicon.png"

@@ -16,10 +16,16 @@ interface AuthContextProps {
   login: (accessToken: string, refreshToken: string, email: string) => Promise<void>;
   logout: () => Promise<void>;
   refreshToken: () => Promise<void>;
+  user: DecodedToken | null;
 }
 
 interface DecodedToken {
   exp: number;
+  email: string;
+  given_name?: string;
+  family_name?: string;
+  picture?: string;
+  role?: string;
 }
 
 export const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -29,6 +35,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isFirstLaunch, setIsFirstLaunch] = useState<boolean>(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState<DecodedToken | null>(null);
+
 
   const checkFirstLaunch = async () => {
     const hasLaunched = await AsyncStorage.getItem('hasLaunchedBefore');
@@ -97,6 +105,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
 
       setAccessToken(newAccessToken);
+      setUser(jwtDecode<DecodedToken>(newAccessToken));
       console.log('🔐 refreshToken() response:', res.data);
     } catch {
       await logout();
@@ -121,6 +130,7 @@ useEffect(() => {
       try {
         decoded = jwtDecode<DecodedToken>(token);
         console.log('🧬 Decoded token:', decoded);
+        setUser(decoded);
       } catch (e) {
         console.error('❌ JWT decoding failed. Logging out.', e);
         await logout();
@@ -175,6 +185,7 @@ useEffect(() => {
         login,
         logout,
         refreshToken,
+        user
       }}>
       {children}
     </AuthContext.Provider>
