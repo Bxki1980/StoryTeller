@@ -16,12 +16,10 @@ ErrorUtils.setGlobalHandler((error, isFatal) => {
 
 export default function App() {
   return (
-    <NavigationContainer>
       <GestureHandlerRootView className='flex-1'>
         <AuthProvider>
           <RootNavigator />
         </AuthProvider>
       </GestureHandlerRootView>
-    </NavigationContainer>
   );
 }

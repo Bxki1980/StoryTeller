@@ -90,7 +90,7 @@ export default function AuthScreen() {
               secureTextEntry
             />
             <GoogleSignInButton />
-            <AuthButton title="Sign up" onPress={() => {}} isLoading={false} />
+            <AuthButton title="Sign up" onPress={handleRegister} isLoading={false} />
           </>
         );
       case 'forgotPassword':

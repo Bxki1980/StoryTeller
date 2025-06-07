@@ -7,19 +7,22 @@ import {
 } from 'react-native';
 import SectionHeader from '~/components/common/SectionHeader';
 import PlaylistCard from '~/components/home/PlaylistCard';
-import BottomTabNavigator from '~/components/common/BottomTabNavigator';
 import Header from '~/components/home/Header';
-import PlaylistsScreen from './PlaylistsScreen';
-import LibraryScreen from './LibraryScreen';
 import { useEffect } from 'react';
 
 
 export default function HomeScreen() {
+
+  useEffect(() => {
+  console.log('🏠 HomeScreen loaded');
+}, []);
+
+
   return (
     <SafeAreaView className="flex-1 bg-white">
       <ScrollView className="px-4">
         <Header />
-
+        
         <SectionHeader title="Recently Played" />
         <FlatList
           horizontal
@@ -36,12 +39,10 @@ export default function HomeScreen() {
 
         <SectionHeader title="Playlists" />
         <View className="flex-row justify-between mt-2">
-          <PlaylistCard title="Playlists" image={0} screen="PlaylistsScreen" />
-          <PlaylistCard title="Library" image={0} screen="LibraryScreen" />
+          <PlaylistCard title="Playlists" image={require('../../assets/images/playlist.webp')} screen="PlaylistsScreen" />
+          <PlaylistCard title="Library" image={require('../../assets/images/library.webp')} screen="LibraryScreen" />
         </View>
       </ScrollView>
-
-      <BottomTabNavigator />
     </SafeAreaView>
   );
 }
