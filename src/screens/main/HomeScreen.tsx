@@ -7,10 +7,7 @@ import {
 } from 'react-native';
 import SectionHeader from '~/components/common/SectionHeader';
 import PlaylistCard from '~/components/home/PlaylistCard';
-import BottomTabNavigator from '~/components/common/BottomTabNavigator';
 import Header from '~/components/home/Header';
-import PlaylistsScreen from './PlaylistsScreen';
-import LibraryScreen from './LibraryScreen';
 import { useEffect } from 'react';
 
 
@@ -25,7 +22,7 @@ export default function HomeScreen() {
     <SafeAreaView className="flex-1 bg-white">
       <ScrollView className="px-4">
         <Header />
-
+        
         <SectionHeader title="Recently Played" />
         <FlatList
           horizontal

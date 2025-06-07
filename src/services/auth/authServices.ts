@@ -50,7 +50,7 @@ export async function register(
   email: string,
   password: string
 ): Promise<{ accessToken: string; refreshToken: string; email: string }> {
-  const response = await axiosInstance.post('/auth/register', {
+  const response = await axiosInstance.post('/auth/signup', {
     email,
     password,
   });
