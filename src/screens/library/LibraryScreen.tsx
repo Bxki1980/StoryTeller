@@ -12,35 +12,30 @@ export default function LibraryScreen() {
   const { books, loading, error } = useBooks();
   const navigation = useNavigation();
 
-    // Search logic
+  // Search logic
   const [rawInput, setRawInput] = useState('');
   const [searchText, setSearchText] = useState('');
 
-    const debouncedSearch = useMemo(
-    () => debounce((text: string) => setSearchText(text), 300),
-    []
-  );
+  const debouncedSearch = useMemo(() => debounce((text: string) => setSearchText(text), 300), []);
 
-    useEffect(() => () => debouncedSearch.cancel(), []);
+  useEffect(() => () => debouncedSearch.cancel(), []);
 
   const handleSearchChange = (text: string) => {
     setRawInput(text);
     debouncedSearch(text);
   };
 
-    const handleBookPress = (book: Book) => {
-   // navigation.navigate('BookDetailScreen', { bookId: book.id });
+  const handleBookPress = (book: Book) => {
+    // navigation.navigate('BookDetailScreen', { bookId: book.id });
   };
 
   const filteredBooks = useMemo(() => {
-    return books.filter((book) =>
-      book.title.toLowerCase().includes(searchText.toLowerCase())
-    );
+    return books.filter((book) => book.title.toLowerCase().includes(searchText.toLowerCase()));
   }, [books, searchText]);
-  
+
   return (
-<View className="flex-1 bg-gray-100">
-      <Text className="text-3xl font-bold text-center mt-6 mb-2">📚 Your Library</Text>
+    <View className="flex-1 bg-gray-100">
+      <Text className="mb-2 mt-6 text-center text-3xl font-bold">📚 Your Library</Text>
 
       <SearchBar
         value={rawInput}
@@ -54,12 +49,12 @@ export default function LibraryScreen() {
       {loading ? (
         <ActivityIndicator className="mt-10" size="large" color="#6C63FF" />
       ) : error ? (
-        <Text className="text-center text-red-500 mt-10">{error}</Text>
+        <Text className="mt-10 text-center text-red-500">{error}</Text>
       ) : filteredBooks.length === 0 ? (
-        <Text className="text-center text-gray-500 mt-10">No books found.</Text>
+        <Text className="mt-10 text-center text-gray-500">No books found.</Text>
       ) : (
         <BookGrid books={filteredBooks} onBookPress={handleBookPress} />
       )}
     </View>
-  )
+  );
 }
