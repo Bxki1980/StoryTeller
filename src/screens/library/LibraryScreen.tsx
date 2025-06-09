@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect } from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
+import { View, Text} from 'react-native';
 import debounce from 'lodash.debounce';
 import { useNavigation } from '@react-navigation/native';
 
@@ -7,6 +7,7 @@ import { useBooks } from '~/hooks/useBooks';
 import SearchBar from '~/components/common/SearchBar';
 import BookGrid from '~/components/Library/BookGrid';
 import { Book } from '~/types/Book';
+import LoadingIndicator from '~/components/common/LoadingIndicator';
 
 export default function LibraryScreen() {
   const { books, loading, error } = useBooks();
@@ -47,7 +48,7 @@ export default function LibraryScreen() {
       />
 
       {loading ? (
-        <ActivityIndicator className="mt-10" size="large" color="#6C63FF" />
+        <LoadingIndicator />
       ) : error ? (
         <Text className="mt-10 text-center text-red-500">{error}</Text>
       ) : filteredBooks.length === 0 ? (
