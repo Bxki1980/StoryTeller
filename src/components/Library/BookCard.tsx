@@ -7,14 +7,19 @@ interface Props {
   onPress: () => void;
 }
 
+
+
 export default function BookCard({ book, onPress }: Props) {
+
+  console.log("Cover image is " + book.coverImageUrl);
+  
   return (
     <TouchableOpacity
       onPress={onPress}
       className="rounded-2x m-2 w-[160px] bg-white shadow-md"
       activeOpacity={0.85}>
       <Image
-        source={{ uri: book.coverImageBlobUrl }}
+        source={{ uri: book.coverImageUrl }}
         className="rounded-t-2x h-48 w-full"
         resizeMode="cover"
       />
