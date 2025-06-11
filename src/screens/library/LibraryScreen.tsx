@@ -2,18 +2,22 @@ import React, { useMemo, useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
 import debounce from 'lodash.debounce';
 import { useNavigation } from '@react-navigation/native';
-
 import { useBooks } from '~/hooks/book/useBooks';
 import SearchBar from '~/components/common/SearchBar';
 import BookGrid from '~/components/Library/BookGrid';
-import { Book } from '~/types/Book';
+import { BookCover } from '~/types/Book/BookCover';
 import LoadingIndicator from '~/components/common/LoadingIndicator';
 import LibraryScreenHeader from '~/screens/library/LibraryScreenHeader';
-import ProfileScreen from '~/screens/main/ProfileScreen';
+import { useAuth } from '~/hooks/auth/useAuth';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { RootStackParamList } from '~/navigation/types';
+
+
+const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
 export default function LibraryScreen() {
   const { books, loading, error } = useBooks();
-  const navigation = useNavigation();
+  const { user } = useAuth()
 
   // Search logic
   const [rawInput, setRawInput] = useState('');
@@ -28,7 +32,7 @@ export default function LibraryScreen() {
     debouncedSearch(text);
   };
 
-  const handleBookPress = (book: Book) => {
+  const handleBookPress = (bookCover: BookCover) => {
     // navigation.navigate('BookDetailScreen', { bookId: book.id });
   };
 
@@ -41,7 +45,7 @@ export default function LibraryScreen() {
       <LibraryScreenHeader
         username={user?.given_name ?? 'Guest'}
         avatarUrl={user?.picture ?? 'https://via.placeholder.com/100'}
-        onSettingsPress={() => navigation.navigate(ProfileScreen)}
+        onSettingsPress={() => navigation.navigate('ProfileScreen')}
       />
 
       <SearchBar
@@ -60,7 +64,7 @@ export default function LibraryScreen() {
       ) : filteredBooks.length === 0 ? (
         <Text className="mt-10 text-center text-gray-500">No books found.</Text>
       ) : (
-        <BookGrid books={filteredBooks} onBookPress={handleBookPress} />
+        <BookGrid booksCover={filteredBooks} onBookPress={handleBookPress} />
       )}
     </View>
   );

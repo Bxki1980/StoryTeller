@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { fetchBookById } from '~/services/book/bookService';
-import { BookDetail } from '~/types/Book';
+import { BookDetail } from '~/types/Book/BookDetail';
 
 export const useBookDetail = (id: string) => {
   const [book, setBook] = useState<BookDetail | null>(null);

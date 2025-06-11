@@ -4,7 +4,7 @@ import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
 import * as AuthSession from 'expo-auth-session';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { useAuth } from '~/hooks/useAuth';
+import { useAuth } from '~/hooks/auth/useAuth';
 import * as AuthService from '~/services/auth/authServices';
 
 WebBrowser.maybeCompleteAuthSession();

@@ -1,5 +1,5 @@
 import { NavigationContainer } from '@react-navigation/native';
-import { useAuth } from '~/hooks/useAuth';
+import { useAuth } from '~/hooks/auth/useAuth';
 import AuthNavigator from './AuthNavigator';
 import AppNavigator from './AppNavigator';
 import LoadingScreen from '~/screens/common/LoadingScreen';

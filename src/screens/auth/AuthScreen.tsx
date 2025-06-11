@@ -11,7 +11,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import AuthInput from '~/components/auth/AuthInput';
 import AuthButton from '~/components/auth/AuthButton';
 import AuthToggle from '~/components/auth/AuthToggle';
-import { useAuth } from '~/hooks/useAuth';
+import { useAuth } from '~/hooks/auth/useAuth';
 import * as AuthService from '../../services/auth/authServices';
 import { Alert } from 'react-native';
 import GoogleSignInButton from '~/components/auth/GoogleSignInButton';

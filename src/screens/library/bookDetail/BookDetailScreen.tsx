@@ -1,36 +1,61 @@
 import React from 'react';
-import { View, Text, Image, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
-import { useRoute, useNavigation } from '@react-navigation/native';
+import { View, Text, ScrollView, Image, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { useBookDetail } from '~/hooks/book/useBookDetail';
+import BookDetailHeader from '~/components/Library/book/bookDetail/BookDetailHeader';
 
 export default function BookDetailScreen() {
-  const route = useRoute<any>();
   const navigation = useNavigation();
+  const route = useRoute<any>();
   const { bookId } = route.params;
 
   const { book, loading, error } = useBookDetail(bookId);
 
   const handleStartReading = () => {
-    navigation.navigate('PageScreen', { bookId: book?.id, sectionId: '001' });
+    // Navigate to the reading screen with the book ID
   };
 
   if (loading) {
-    return <ActivityIndicator className="mt-10" size="large" color="#6C63FF" />;
+    return (
+      <View className="flex-1 items-center justify-center bg-white">
+        <ActivityIndicator size="large" color="#6C63FF" />
+      </View>
+    );
   }
 
   if (!book || error) {
-    return <Text className="text-center mt-10 text-red-500">Failed to load book details.</Text>;
+    return (
+      <View className="flex-1 items-center justify-center bg-white px-6">
+        <Text className="text-center text-lg text-red-500">Failed to load book details.</Text>
+      </View>
+    );
   }
 
   return (
     <ScrollView className="flex-1 bg-white">
-      <Image source={{ uri: book.coverImageUrl }} className="w-full h-80" resizeMode="cover" />
-      <View className="p-4">
-        <Text className="text-2xl font-bold text-gray-900">{book.title}</Text>
-        <Text className="text-sm text-gray-500 mt-1">by {book.author}</Text>
-        <Text className="text-sm text-indigo-500 mt-1">For Ages: {book.ageRange}</Text>
+      {/* Cover Image */}
+      <Image
+        source={{ uri: book.coverImageUrl }}
+        className="w-full h-80"
+        resizeMode="cover"
+      />
 
-        <Text className="text-base text-gray-800 mt-4 leading-relaxed">{book.description}</Text>
+      {/* Header */}
+      <BookDetailHeader
+        title={book.title}
+        author={book.author}
+        ageRange={book.ageRange}
+        onBackPress={() => navigation.goBack()}
+        // Optional: Add bookmark toggle below
+        // onBookmarkPress={() => toggleBookmark(book.id)}
+        // isBookmarked={bookmarked}
+      />
+
+      {/* Description + Action */}
+      <View className="px-5 pb-6">
+        <Text className="text-base text-gray-800 leading-relaxed mt-2">
+          {book.description}
+        </Text>
 
         <TouchableOpacity
           onPress={handleStartReading}

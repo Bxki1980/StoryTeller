@@ -1,22 +1,22 @@
 import React from 'react';
 import { View, FlatList } from 'react-native';
-import { Book } from '~/types/Book';
+import { BookCover } from '~/types/Book/BookCover';
 import BookCard from './BookCard';
 
 interface Props {
-  books: Book[];
-  onBookPress: (book: Book) => void;
+  booksCover: BookCover[];
+  onBookPress: (booksCover: BookCover) => void;
 }
 
-export default function BookGrid({ books, onBookPress }: Props) {
+export default function BookGrid({ booksCover, onBookPress }: Props) {
   return (
     <FlatList
-      data={books}
+      data={booksCover}
       keyExtractor={(item) => item.id}
       numColumns={2}
       contentContainerStyle={{ padding: 8, paddingBottom: 16 }}
       showsVerticalScrollIndicator={false}
-      renderItem={({ item }) => <BookCard book={item} onPress={() => onBookPress(item)} />}
+      renderItem={({ item }) => <BookCard bookCover={item} onPress={() => onBookPress(item)} />}
     />
   );
 }

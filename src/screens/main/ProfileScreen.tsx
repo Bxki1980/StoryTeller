@@ -3,7 +3,7 @@ import { SafeAreaView, ScrollView } from 'react-native';
 import ProfileAvatar from '~/components/profile/ProfileAvatar';
 import ProfileInfo from '~/components/profile/ProfileInfo';
 import ProfileActions from '~/components/profile/ProfileActions';
-import { useAuth } from '~/hooks/useAuth';
+import { useAuth } from '~/hooks/auth/useAuth';
 
 export default function ProfileScreen() {
   const { user, logout } = useAuth();
