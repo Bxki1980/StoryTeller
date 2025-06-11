@@ -1,5 +1,8 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BottomTabNavigator from '~/components/common/BottomTabNavigator';
+import BookDetailScreen from '~/screens/library/bookDetail/BookDetailScreen';
+import LibraryScreen from '~/screens/library/LibraryScreen';
+import ProfileScreen from '~/screens/main/ProfileScreen';
 
 console.log('✅ AppNavigator mounted');
 
@@ -9,6 +12,9 @@ export default function AppNavigator() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="MainTabs" component={BottomTabNavigator} />
+      <Stack.Screen name="LibraryScreen" component={LibraryScreen} />
+      <Stack.Screen name="BookDetailScreen" component={BookDetailScreen} />
+      <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
     </Stack.Navigator>
   );
 }

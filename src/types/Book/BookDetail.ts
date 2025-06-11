@@ -1,5 +1,5 @@
 export interface BookDetail {
-  id: string;
+  bookId: string;
   title: string;
   author: string;
   ageRange: string;

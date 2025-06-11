@@ -32,10 +32,10 @@ export default function LibraryScreen() {
     debouncedSearch(text);
   };
 
-  const handleBookPress = (bookCover: BookCover) => {
-    // navigation.navigate('BookDetailScreen', { bookId: book.id });
+  const handleBookPress = (book: BookCover) => {
+    navigation.navigate('BookDetailScreen', { bookId: book.bookId });
   };
-
+  
   const filteredBooks = useMemo(() => {
     return (booksCover ?? []).filter((bookCover) =>
       bookCover.title.toLowerCase().includes(searchText.toLowerCase())

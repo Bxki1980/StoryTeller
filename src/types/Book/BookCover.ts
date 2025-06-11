@@ -1,5 +1,5 @@
 export interface BookCover {
-  id: string;
+  bookId: string; 
   title: string;
   author: string;
   ageRange: string;

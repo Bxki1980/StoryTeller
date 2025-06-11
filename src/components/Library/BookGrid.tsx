@@ -12,7 +12,7 @@ export default function BookGrid({ booksCover, onBookPress }: Props) {
   return (
     <FlatList
       data={booksCover}
-      keyExtractor={(item) => item.id}
+      keyExtractor={(item) => item.bookId}
       numColumns={2}
       contentContainerStyle={{ padding: 8, paddingBottom: 16 }}
       showsVerticalScrollIndicator={false}

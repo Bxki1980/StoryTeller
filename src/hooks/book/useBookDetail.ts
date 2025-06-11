@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { fetchBookById } from '~/services/book/bookService';
+import { fetchBookDetail } from '~/services/book/bookService';
 import { BookDetail } from '~/types/Book/BookDetail';
 
 export const useBookDetail = (id: string) => {
@@ -10,9 +10,10 @@ export const useBookDetail = (id: string) => {
   useEffect(() => {
     const load = async () => {
       try {
-        const result = await fetchBookById(id);
-        setBook(result);
-      } catch (e) {
+        const result = await fetchBookDetail(id);
+        setBook(result[0] ?? null);
+      } catch (e: any) {
+        console.error('❌ Failed to load book:', e);
         setError('Failed to load book');
       } finally {
         setLoading(false);
