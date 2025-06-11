@@ -8,9 +8,6 @@ interface Props {
 }
 
 export default function BookCard({ bookCover, onPress }: Props) {
-
-  console.log("Cover image is " + bookCover.coverImageUrl);
-
   return (
     <TouchableOpacity
       onPress={onPress}
