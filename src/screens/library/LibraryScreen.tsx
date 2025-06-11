@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect } from 'react';
-import { View, Text} from 'react-native';
+import { View, Text } from 'react-native';
 import debounce from 'lodash.debounce';
 import { useNavigation } from '@react-navigation/native';
 
@@ -8,6 +8,8 @@ import SearchBar from '~/components/common/SearchBar';
 import BookGrid from '~/components/Library/BookGrid';
 import { Book } from '~/types/Book';
 import LoadingIndicator from '~/components/common/LoadingIndicator';
+import LibraryScreenHeader from '~/screens/library/LibraryScreenHeader';
+import ProfileScreen from '~/screens/main/ProfileScreen';
 
 export default function LibraryScreen() {
   const { books, loading, error } = useBooks();
@@ -36,7 +38,11 @@ export default function LibraryScreen() {
 
   return (
     <View className="flex-1 bg-gray-100">
-      <Text className="mb-2 mt-6 text-center text-3xl font-bold">📚 Your Library</Text>
+      <LibraryScreenHeader
+        username={user?.given_name ?? 'Guest'}
+        avatarUrl={user?.picture ?? 'https://via.placeholder.com/100'}
+        onSettingsPress={() => navigation.navigate(ProfileScreen)}
+      />
 
       <SearchBar
         value={rawInput}

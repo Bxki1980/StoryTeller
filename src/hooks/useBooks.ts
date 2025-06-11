@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { fetchBooks } from '~/services/book/bookService';
+import { fetchBooksCover } from '~/services/book/bookService';
 import { Book } from '~/types/Book';
 
 export const useBooks = () => {
@@ -10,7 +10,7 @@ export const useBooks = () => {
   useEffect(() => {
     const loadBooks = async () => {
       try {
-        const fetchedBooks = await fetchBooks();
+        const fetchedBooks = await fetchBooksCover();
         setBooks(fetchedBooks);
       } catch (error) {
         setError('Error fetching books');
