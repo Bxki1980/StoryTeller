@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import debounce from 'lodash.debounce';
 import { useNavigation } from '@react-navigation/native';
 
-import { useBooks } from '~/hooks/useBooks';
+import { useBooks } from '~/hooks/book/useBooks';
 import SearchBar from '~/components/common/SearchBar';
 import BookGrid from '~/components/Library/BookGrid';
 import { Book } from '~/types/Book';

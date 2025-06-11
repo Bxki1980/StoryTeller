@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { fetchBooksCover } from '~/services/book/bookService';
-import { Book } from '~/types/Book';
+import { BookCover } from '~/types/Book';
 
 export const useBooks = () => {
-  const [books, setBooks] = useState<Book[]>([]);
+  const [books, setBooks] = useState<BookCover[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 

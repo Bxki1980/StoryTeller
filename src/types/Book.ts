@@ -10,3 +10,31 @@ export interface Book {
   updatedAt: string;
   version: string;
 }
+
+
+export interface BookDetail {
+  id: string;
+  title: string;
+  author: string;
+  ageRange: string;
+  coverImageUrl: string;
+  description: string;
+}
+
+
+export interface BookCover {
+  id: string;
+  title: string;
+  author: string;
+  ageRange: string;
+  coverImageUrl: string;
+}
+
+
+export interface Page {
+  id: string;
+  title: string;
+  author: string;
+  ageRange: string;
+  coverImageUrl: string;
+}

@@ -1,5 +1,6 @@
 import axiosInstance from '~/api/axiosInstance';
-import { Book } from '~/types/Book';
+import { Page , BookDetail , BookCover } from '~/types/Book';
+
 
 export const fetchBooksCover = async (): Promise<Book[]> => {
   try {
@@ -13,13 +14,26 @@ export const fetchBooksCover = async (): Promise<Book[]> => {
 };
 
 
-export const fetchBooksDetail = async (): Promise<Book[]> => {
+export const fetchBooksDetail = async (): Promise<BookDetail[]> => {
   try {
     console.log('📡 Fetching books from:', axiosInstance.defaults.baseURL + '/Book/details');
     const response = await axiosInstance.get('/Book/details');
     return response.data.data;
   } catch (error) {
     console.error('Error fetching books:', error);
+    throw error;
+  }
+};
+
+
+
+export const fetchBookById = async (id: string): Promise<BookDetail> => {
+  try {
+    console.log('📡 Fetching book from:', axiosInstance.defaults.baseURL + `/Book/details/${id}`);
+    const response = await axiosInstance.get(`/Book/details/${id}`);
+    return response.data.data;
+  } catch (error) {
+    console.error('Error fetching book:', error);
     throw error;
   }
 };
