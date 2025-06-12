@@ -14,17 +14,23 @@ export const fetchBooksCover = async (): Promise<BookCover[]> => {
   }
 };
 
-export const fetchBookDetail = async (bookId: string): Promise<BookDetail[]> => {
+
+export const fetchBookDetail = async (id: string): Promise<BookDetail> => {
   try {
-      if (!bookId) throw new Error('Book ID is required for fetchBookDetail');
-    console.log('📡 Fetching books from:', axiosInstance.defaults.baseURL + `/Book/${bookId}/detail`);
-    const response = await axiosInstance.get(`/Book/${bookId}/detail`);
+    const response = await axiosInstance.get<ApiResponse<BookDetail>>(`/Book/${id}/detail`);
+
+    if (!response.data.success || !response.data.data) {
+      throw new Error('Book not found');
+    }
+
     return response.data.data;
-  } catch (error) {
-    console.error('Error fetching books:', error);
+  } catch (error: any) {
+    console.error('❌ Error in fetchBookDetail:', error);
     throw error;
   }
 };
+
+
 
 export const fetchBookById = async (id: string): Promise<BookDetail> => {
   try {

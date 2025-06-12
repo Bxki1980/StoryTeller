@@ -11,7 +11,7 @@ export const useBookDetail = (id: string) => {
     const load = async () => {
       try {
         const result = await fetchBookDetail(id);
-        setBook(result[0] ?? null);
+        setBook(result ?? null);
       } catch (e: any) {
         console.error('❌ Failed to load book:', e);
         setError('Failed to load book');

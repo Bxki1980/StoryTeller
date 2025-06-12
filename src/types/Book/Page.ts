@@ -1,7 +1,7 @@
 export interface Page {
-  id: string;
-  title: string;
-  author: string;
-  ageRange: string;
-  coverImageUrl: string;
+  bookId: string;
+  sectionId: string;
+  content: string;
+  imageUrl: string;
+  audioUrl: string;
 }
