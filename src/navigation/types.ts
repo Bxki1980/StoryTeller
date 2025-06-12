@@ -3,4 +3,5 @@ export type RootStackParamList = {
   HomeScreen: undefined;
   ProfileScreen: undefined;
   BookDetailScreen: { bookId: string };
+  StartReadingScreen: { bookId: string };
 };

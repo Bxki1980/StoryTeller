@@ -2,6 +2,17 @@ import axiosInstance from '~/api/axiosInstance';
 import { ApiResponse } from '~/types/api/ApiResponse';
 import { BookDetail } from '~/types/Book/BookDetail';
 import { BookCover } from '~/types/Book/BookCover';
+import { Page } from '~/types/Book/Page';
+import { PageQueryParameters } from '~/types/Book/PageQueryParameters';
+
+
+
+export interface PaginatedContinuationResponse<T> {
+  data: T[];
+  continuationToken: string | null;
+}
+
+
 
 export const fetchBooksCover = async (): Promise<BookCover[]> => {
   try {
@@ -42,3 +53,27 @@ export const fetchBookById = async (id: string): Promise<BookDetail> => {
     throw error;
   }
 };
+
+
+export async function fetchBookPages(
+  bookId: string,
+  queryParams: PageQueryParameters
+): Promise<PaginatedContinuationResponse<Page>> {
+  try {
+    const endpoint = `/api/page/book/${bookId}/pages`;
+
+    const response = await axiosInstance.get<ApiResponse<PaginatedContinuationResponse<Page>>>(
+      endpoint,
+      { params: queryParams }
+    );
+
+    if (!response.data.success || !response.data.data) {
+      throw new Error('Failed to load book pages');
+    }
+
+    return response.data.data;
+  } catch (error) {
+    console.error(`[PageService] Error fetching pages for book ${bookId}:`, error);
+    throw error;
+  }
+}
