@@ -14,10 +14,12 @@ export function useBookPages(bookId: string, pageSize = 10) {
 
     setIsLoading(true);
     try {
-      const queryParams: PageQueryParameters = {
-        pageSize,
-        continuationToken,
-      };
+            const queryParams: PageQueryParameters = {
+            pageSize,
+            continuationToken: continuationToken ?? null,
+            };
+
+
 
       const result = await fetchBookPages(bookId, queryParams);
 
