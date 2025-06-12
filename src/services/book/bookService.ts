@@ -60,12 +60,12 @@ export async function fetchBookPages(
   queryParams: PageQueryParameters
 ): Promise<PaginatedContinuationResponse<Page>> {
   try {
-    const endpoint = `/api/page/book/${bookId}/pages`;
+    const endpoint = `/page/book/${bookId}/pages`;
 
-    const response = await axiosInstance.get<ApiResponse<PaginatedContinuationResponse<Page>>>(
-      endpoint,
-      { params: queryParams }
-    );
+  const response = await axiosInstance.get<ApiResponse<PaginatedContinuationResponse<Page>>>(
+    endpoint,
+    { params: queryParams }
+  );
 
     if (!response.data.success || !response.data.data) {
       throw new Error('Failed to load book pages');

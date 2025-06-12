@@ -1,6 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BottomTabNavigator from '~/components/common/BottomTabNavigator';
 import BookDetailScreen from '~/screens/library/bookDetail/BookDetailScreen';
+import ReadingScreen from '~/screens/library/bookDetail/ReadingScreen';
 import LibraryScreen from '~/screens/library/LibraryScreen';
 import ProfileScreen from '~/screens/main/ProfileScreen';
 
@@ -15,6 +16,7 @@ export default function AppNavigator() {
       <Stack.Screen name="LibraryScreen" component={LibraryScreen} />
       <Stack.Screen name="BookDetailScreen" component={BookDetailScreen} />
       <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+      <Stack.Screen name="StartReadingScreen" component={ReadingScreen} />
     </Stack.Navigator>
   );
 }
