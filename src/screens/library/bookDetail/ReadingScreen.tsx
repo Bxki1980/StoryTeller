@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useRef } from 'react';
 import { Text, View, Image, TouchableOpacity, ActivityIndicator, SafeAreaView } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { useBookPages } from '~/hooks/book/useBookPages';
 import { Page } from '~/types/Book/Page';
 import { Audio } from 'expo-av';
+import PageFlipper from '~/components/reading/PageFlipper';
+import PageIndicator from '~/components/reading/PageIndicator';
 
 import {
   PanGestureHandler,
@@ -39,8 +41,17 @@ export default function ReadingScreen() {
   const { pages, fetchPages, isLoading, hasMore } = useBookPages(bookId);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [sound, setSound] = useState<Audio.Sound | null>(null);
+  const pageFlipperRef = useRef<{ scrollToIndex: (index: number) => void }>(null);
+
 
   const translateX = useSharedValue(0);
+
+
+
+
+    const handleDotPress = (index: number) => {
+    pageFlipperRef.current?.scrollToIndex(index);
+  };
 
   // ────────────────
   // Gesture Handler
@@ -150,6 +161,12 @@ export default function ReadingScreen() {
       <PanGestureHandler onGestureEvent={gestureHandler}>
         <Animated.View style={[{ flex: 1 }, animatedStyle]}>
           <SafeAreaView className="flex-1 justify-between bg-white px-4 py-6">
+      <PageFlipper
+        ref={pageFlipperRef}
+        pages={pages}
+        currentIndex={currentIndex}
+        onIndexChange={setCurrentIndex}
+      />
             {/* Section Label */}
             <Text className="mb-2 text-right text-xs font-semibold text-indigo-600">
               Section {currentPage.sectionId}
@@ -177,6 +194,11 @@ export default function ReadingScreen() {
                 onPress={handleNext}
                 disabled={!hasMore && currentIndex >= pages.length - 1}
               />
+                    <PageIndicator
+        totalSections={pages.length}
+        currentIndex={currentIndex}
+        onDotPress={handleDotPress}
+      />
             </View>
           </SafeAreaView>
         </Animated.View>
