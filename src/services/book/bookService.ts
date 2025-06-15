@@ -62,10 +62,15 @@ export async function fetchBookPages(
   try {
     const endpoint = `/page/book/${bookId}/pages`;
 
-  const response = await axiosInstance.get<ApiResponse<PaginatedContinuationResponse<Page>>>(
-    endpoint,
-    { params: queryParams }
-  );
+    const response = await axiosInstance.get<ApiResponse<PaginatedContinuationResponse<Page>>>(
+      endpoint,
+      {
+        params: {
+          pageSize: queryParams.pageSize,
+          continuationToken: queryParams.continuationToken ?? undefined, 
+        },
+      }
+    );
 
     if (!response.data.success || !response.data.data) {
       throw new Error('Failed to load book pages');
@@ -73,7 +78,7 @@ export async function fetchBookPages(
 
     return response.data.data;
   } catch (error) {
-    console.error(`[PageService] Error fetching pages for book ${bookId}:`, error);
+    console.error(`[BookService] Error fetching pages for book ${bookId}:`, error);
     throw error;
   }
 }

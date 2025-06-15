@@ -102,13 +102,11 @@ export default function ReadingScreen() {
     }
   };
 
-  if (isLoading && pages.length === 0) {
-    return (
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <ReadingSkeleton />
-      </GestureHandlerRootView>
-    );
-  }
+  useEffect(() => {
+    if (pages.length === 0 && !isLoading) {
+      fetchPages();
+    }
+  }, [pages.length, isLoading]);
 
   useEffect(() => {
     if (currentPage?.audioUrl) {
@@ -128,6 +126,14 @@ export default function ReadingScreen() {
       <SafeAreaView className="flex-1 items-center justify-center bg-white">
         <ActivityIndicator size="large" color="#6C63FF" />
       </SafeAreaView>
+    );
+  }
+
+  if (isLoading && pages.length === 0) {
+    return (
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <ReadingSkeleton />
+      </GestureHandlerRootView>
     );
   }
 
