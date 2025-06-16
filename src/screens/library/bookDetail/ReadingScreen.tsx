@@ -23,7 +23,6 @@ import Animated, {
 import { NavButton } from '~/components/common/NavButton';
 import ReadingSkeleton from '~/components/skeletons/ReadingSkeleton';
 import { ReadingService } from '~/services/book/ReadingService';
-import { useAuth } from '~/hooks/auth/useAuth';
 
 // Constants
 const SWIPE_THRESHOLD = 80;
@@ -44,7 +43,6 @@ export default function ReadingScreen() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [sound, setSound] = useState<Audio.Sound | null>(null);
   const pageFlipperRef = useRef<{ scrollToIndex: (index: number) => void }>(null);
-  const user = useAuth();
 
 
 
@@ -135,11 +133,12 @@ export default function ReadingScreen() {
     };
   }, [currentPage]);
 
-    // ✅ Save progress when currentIndex changes
+  /*  // ✅ Save progress when currentIndex changes
   useEffect(() => {    if (user?.id && bookId) {
       ReadingService.saveProgress(bookId, currentIndex, user.id);
     }
   }, [currentIndex]); // 👈 Runs every time page changes
+*/ 
 
   // ────────────────
   // Render UI

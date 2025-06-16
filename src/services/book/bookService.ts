@@ -55,30 +55,46 @@ export const fetchBookById = async (id: string): Promise<BookDetail> => {
 };
 
 
+
+/**
+ * Fetch paginated book pages using continuation token (Cosmos DB friendly).
+ * @param bookId Book ID (partition key)
+ * @param queryParams Pagination parameters
+ * @returns Continuation-based paginated list of pages
+ */
 export async function fetchBookPages(
   bookId: string,
   queryParams: PageQueryParameters
 ): Promise<PaginatedContinuationResponse<Page>> {
+  if (!bookId) {
+    throw new Error('📕 Book ID must be provided.');
+  }
+
+  const endpoint = `/page/book/${bookId}/pages`;
+  const params = {
+    pageSize: queryParams.pageSize,
+    continuationToken: queryParams.continuationToken || undefined,
+  };
+
   try {
-    const endpoint = `/page/book/${bookId}/pages`;
+    console.log('📦 Fetching pages with params:', params);
+    console.log('📦 Endpoint:', endpoint);
 
     const response = await axiosInstance.get<ApiResponse<PaginatedContinuationResponse<Page>>>(
       endpoint,
-      {
-        params: {
-          pageSize: queryParams.pageSize,
-          continuationToken: queryParams.continuationToken ?? undefined, 
-        },
-      }
+      { params }
     );
 
-    if (!response.data.success || !response.data.data) {
+    const { success, data, errors } = response.data;
+
+    if (!success || !data) {
+      console.error('❌ Failed to load book pages:', errors);
       throw new Error('Failed to load book pages');
     }
 
-    return response.data.data;
-  } catch (error) {
-    console.error(`[BookService] Error fetching pages for book ${bookId}:`, error);
+    return data;
+  } catch (error: any) {
+    console.error(`[BookService] ❌ Error fetching pages for book ${bookId}:`, error?.message ?? error);
     throw error;
   }
 }
